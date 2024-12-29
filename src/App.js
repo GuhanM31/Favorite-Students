@@ -1,24 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Landing from './page/Landing'; // Adjust path if necessary
+import Student from './page/Student'; // Adjust path if necessary
 
 function App() {
+  const [favorites, setFavorites] = useState([]);
+
+  const addToFavorites = (student) => {
+    if (!favorites.includes(student)) {
+      setFavorites([...favorites, student]);
+    }
+  };
+
+  const removeFavorite = (student) => {
+    setFavorites(favorites.filter(fav => fav !== student));
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Landing addToFavorites={addToFavorites} />} />
+        <Route path="/favorites" element={<Student favorites={favorites} removeFavorite={removeFavorite} />} />
+      </Routes>
+    </Router>
   );
 }
 
